@@ -91,7 +91,7 @@ namespace ToDoList
                         Id = (int)reader["Id"],
                         Name = reader["Name"].ToString(),
                         Date = (DateTime)reader["Date"],
-                        Time = DateTime.Parse(reader["Time"].ToString(), System.Globalization.CultureInfo.CurrentCulture),
+                        Time = DateTime.Parse(reader["Time"].ToString() /*, System.Globalization.CultureInfo.CurrentCulture*/),
                         PriorityId = (int)reader["PriorityId"],
                         PriorityName = reader["PriorityName"].ToString(),
                         Tags = reader["Tag"].ToString(),
@@ -123,11 +123,14 @@ namespace ToDoList
                             }
                             break;
                         case 3:
-                            dateTime.Visible = true;
+                            monthCalendar.Enabled = true;
+                            monthCalendar.BackColor = Color.White;
                             if (task.Date == monthCalendar.SelectionStart.Date)
                                 FillTaskList(task, index);
                             break;
                         case 4:
+                            monthCalendar.Enabled = true;
+                            monthCalendar.BackColor = Color.White;
                             DateTime startDate = monthCalendar.SelectionStart.Date;
                             DateTime endDate = monthCalendar.SelectionEnd.Date;
                             if (task.Date >= startDate && task.Date <= endDate)
@@ -152,7 +155,6 @@ namespace ToDoList
             }
 
         }
-
         private void FillTaskList(ToDoTask task, int index)
         {
             if (projectList.GetItemChecked(index))
@@ -200,12 +202,10 @@ namespace ToDoList
                     connection.Close();
             }
         }
-
         private void projectList_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadTasks();
         }
-
         private void tasksList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tasksList.FocusedItem != null)
@@ -214,18 +214,13 @@ namespace ToDoList
                 textComment.Text = tasks[index].Comment;
             }
         }
-
         private void periodSelect_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (dateTime.Visible)
+            if (monthCalendar.Enabled)
             {
-                dateTime.Visible = false;
+                monthCalendar.Enabled = false;
+                monthCalendar.BackColor = Color.LightGray;
             }
-            LoadTasks();
-        }
-
-        private void dateTime_ValueChanged(object sender, EventArgs e)
-        {
             LoadTasks();
         }
 
@@ -244,10 +239,10 @@ namespace ToDoList
             taskEditor.OperationTitle = "Нова задача";
             taskEditor.Projects = projects;
             taskEditor.Priorities = priorities;
-            //taskEditor.ProjectsName = tasksList.FocusedItem.SubItems[1].Text;
             taskEditor.Tasks = tasks;
             taskEditor.Date = DateTime.Now;
             taskEditor.Time = DateTime.Now;
+
             if (taskEditor.ShowDialog() == DialogResult.OK)
             {
                 string query = "exec sp_AddTask @Name, @Date, @Time, @PriorityId, @Tag, @Comment, @ProjectId, @IsDone";
@@ -269,5 +264,83 @@ namespace ToDoList
                 LoadTasks();
             }
         }
+
+        private void editTaskMenu_Click(object sender, EventArgs e)
+        {
+            TaskEditor taskEditor = new TaskEditor();
+            taskEditor.OperationTitle = "Редагувння задачі";
+            taskEditor.Projects = projects;
+            taskEditor.Priorities = priorities;
+            taskEditor.Tasks = tasks;
+            ToDoTask editTask = tasks[tasksList.FocusedItem.Index];
+            taskEditor.TaskName = editTask.Name;
+            taskEditor.Date = editTask.Date;
+            taskEditor.Time = editTask.Time;
+            taskEditor.PriorityId = editTask.PriorityId;
+            taskEditor.PriorityName = editTask.PriorityName;
+            taskEditor.Tags = editTask.Tags;
+            taskEditor.Comment = editTask.Comment;
+            taskEditor.ProjectId = editTask.ProjectId;
+            taskEditor.ProjectName = editTask.ProjectName;
+            taskEditor.IsDone = editTask.IsDone;
+
+            if (taskEditor.ShowDialog() == DialogResult.OK)
+            {
+                string query = "exec sp_UpdateTask @Id, @Name, @Date, @Time, @PriorityId, @Tag, @Comment, @ProjectId, @IsDone";
+                connection.Open();
+                SqlCommand cmd = new SqlCommand(query, connection);
+                cmd.Parameters.Add("@Id", SqlDbType.Int).Value = editTask.Id;
+                cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = taskEditor.TaskName;
+                cmd.Parameters.Add("@Date", SqlDbType.Date).Value = taskEditor.Date;
+                cmd.Parameters.Add("@Time", SqlDbType.Time).Value = taskEditor.Time.TimeOfDay;
+                cmd.Parameters.Add("@PriorityId", SqlDbType.Int).Value = taskEditor.PriorityId;
+                cmd.Parameters.Add("@Tag", SqlDbType.NVarChar).Value = taskEditor.Tags;
+                cmd.Parameters.Add("@Comment", SqlDbType.NVarChar).Value = taskEditor.Comment;
+                cmd.Parameters.Add("@ProjectId", SqlDbType.Int).Value = taskEditor.ProjectId;
+                cmd.Parameters.Add("@IsDone", SqlDbType.Bit).Value = taskEditor.IsDone;
+                cmd.ExecuteNonQuery();
+                connection.Close();
+                MessageBox.Show("Задача успішно змінена", "Сповіщення",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadProjects();
+                LoadTasks();
+            }
+        }
+
+        private void deleteTaskMenu_Click(object sender, EventArgs e)
+        {
+            TaskEditor taskEditor = new TaskEditor();
+            taskEditor.OperationTitle = "Видалення задачі";
+            taskEditor.Projects = projects;
+            taskEditor.Priorities = priorities;
+            taskEditor.Tasks = tasks;
+            ToDoTask editTask = tasks[tasksList.FocusedItem.Index];
+            taskEditor.TaskName = editTask.Name;
+            taskEditor.Date = editTask.Date;
+            taskEditor.Time = editTask.Time;
+            taskEditor.PriorityId = editTask.PriorityId;
+            taskEditor.PriorityName = editTask.PriorityName;
+            taskEditor.Tags = editTask.Tags;
+            taskEditor.Comment = editTask.Comment;
+            taskEditor.ProjectId = editTask.ProjectId;
+            taskEditor.ProjectName = editTask.ProjectName;
+            taskEditor.IsDone = editTask.IsDone;
+
+            if (taskEditor.ShowDialog() == DialogResult.OK)
+            {
+                string query = "exec sp_DeleteTask @Id";
+                connection.Open();
+                SqlCommand cmd = new SqlCommand(query, connection);
+                cmd.Parameters.Add("@Id", SqlDbType.Int).Value = editTask.Id;
+                cmd.ExecuteNonQuery();
+                connection.Close();
+                MessageBox.Show("Задача успішно видалена", "Сповіщення",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadProjects();
+                LoadTasks();
+            }
+        }
+
+
     }
 }

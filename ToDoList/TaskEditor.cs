@@ -48,11 +48,12 @@ namespace ToDoList.Models
             }
 
             dateSet.Value = Date;
-            timeSet.Format = DateTimePickerFormat.Custom;
+            timeSet.Format = DateTimePickerFormat.Time;
             timeSet.CustomFormat = "HH:MM";
             timeSet.ShowUpDown = true;
             timeSet.Value = Time;
-            if (OperationTitle == "Редагувння задачі")
+            // Видалення задачі
+            if (OperationTitle != "Нова задача")
             {
                 taskField.Text = TaskName;
                 priorityList.SelectedIndex = priorityList.FindStringExact(PriorityName);
@@ -60,9 +61,24 @@ namespace ToDoList.Models
                 tagsField.Text = Tags;
                 commentField.Text = Comment;
                 isDoneCheck.Checked = IsDone;
+                if (OperationTitle == "Видалення задачі")
+                {
+                    taskField.Enabled = false;
+                    dateSet.Enabled = false;
+                    timeSet.Enabled = false;
+                    priorityList.Enabled = false;
+                    projectList.Enabled = false;
+                    tagsField.Enabled = false;
+                    commentField.Enabled = false;
+                    isDoneCheck.Enabled = false;
+                }
             }
-            projectList.SelectedIndex = 0;
-            priorityList.SelectedIndex = 1;
+            else
+            {
+                projectList.SelectedIndex = 0;
+                priorityList.SelectedIndex = 1;
+            }
+
         }
 
         private void executeButton_Click(object sender, EventArgs e)
@@ -89,9 +105,40 @@ namespace ToDoList.Models
                 IsDone = isDoneCheck.Checked;
                 counterOkResult++;
             }
+
+            if (String.IsNullOrEmpty(tagsField.Text))
+                Tags = "";
+            else
+                Tags = tagsField.Text;
+
+            if (String.IsNullOrEmpty(commentField.Text))
+                Comment = "";
+            else
+                Comment = commentField.Text;
+
+            if (dateSet.Value < DateTime.Today)
+                MessageBox.Show("Введіть коректну дату початку для задачі", "Увага",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+            else
+            {
+                Date = dateSet.Value;
+                counterOkResult++;
+            }
+
+
+            if (timeSet.Value < DateTime.Now)
+                MessageBox.Show("Введіть коректний час початку для задачі", "Увага",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            else
+            {
+                Time = timeSet.Value;
+                counterOkResult++;
+            }
+
             ProjectId = Projects.Find(p => p.Name == (string)projectList.SelectedItem).Id;
             PriorityId = Priorities.Find(p => p.Name == (string)priorityList.SelectedItem).Id;
-            if (counterOkResult == 1)
+            if (counterOkResult == 3)
             {
                 this.DialogResult = DialogResult.OK;
             }

@@ -42,22 +42,29 @@ namespace ToDoList
             this.projectsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.projectManagerMenuI = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.commentLabel = new System.Windows.Forms.Label();
             this.textComment = new System.Windows.Forms.TextBox();
             this.tasksList = new System.Windows.Forms.ListView();
             this.nameColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.statusColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.dateColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.timeColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.projectColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.priorityColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.projectColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.statusColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.dateTime = new System.Windows.Forms.DateTimePicker();
-            this.projectList = new System.Windows.Forms.CheckedListBox();
-            this.monthCalendar = new System.Windows.Forms.MonthCalendar();
-            this.periodSelect = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lowPriorityCheck = new System.Windows.Forms.CheckBox();
+            this.finishedChek = new System.Windows.Forms.CheckBox();
+            this.normalPriorityCheck = new System.Windows.Forms.CheckBox();
+            this.inProgressCheck = new System.Windows.Forms.CheckBox();
+            this.highPriorityCheck = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.periodSelect = new System.Windows.Forms.ComboBox();
+            this.monthCalendar = new System.Windows.Forms.MonthCalendar();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.projectList = new System.Windows.Forms.CheckedListBox();
             this.menuStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -89,13 +96,13 @@ namespace ToDoList
             // printTaskListToolStripMenuItem
             // 
             this.printTaskListToolStripMenuItem.Name = "printTaskListToolStripMenuItem";
-            this.printTaskListToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.printTaskListToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.printTaskListToolStripMenuItem.Text = "&PrintTaskList";
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.exitToolStripMenuItem.Text = "&Exit";
             // 
             // tasksMenuI
@@ -121,12 +128,14 @@ namespace ToDoList
             this.editTaskMenu.Name = "editTaskMenu";
             this.editTaskMenu.Size = new System.Drawing.Size(180, 22);
             this.editTaskMenu.Text = "&EditTask";
+            this.editTaskMenu.Click += new System.EventHandler(this.editTaskMenu_Click);
             // 
             // deleteTaskMenu
             // 
             this.deleteTaskMenu.Name = "deleteTaskMenu";
             this.deleteTaskMenu.Size = new System.Drawing.Size(180, 22);
             this.deleteTaskMenu.Text = "&DeleteTask";
+            this.deleteTaskMenu.Click += new System.EventHandler(this.deleteTaskMenu_Click);
             // 
             // findTaskMenu
             // 
@@ -145,27 +154,37 @@ namespace ToDoList
             // projectManagerMenuI
             // 
             this.projectManagerMenuI.Name = "projectManagerMenuI";
-            this.projectManagerMenuI.Size = new System.Drawing.Size(180, 22);
+            this.projectManagerMenuI.Size = new System.Drawing.Size(166, 22);
             this.projectManagerMenuI.Text = "&ProjectManager";
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.commentLabel);
             this.groupBox2.Controls.Add(this.textComment);
             this.groupBox2.Controls.Add(this.tasksList);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox2.Location = new System.Drawing.Point(0, 299);
+            this.groupBox2.Location = new System.Drawing.Point(0, 273);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(935, 377);
+            this.groupBox2.Size = new System.Drawing.Size(935, 403);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Задачі";
             // 
+            // commentLabel
+            // 
+            this.commentLabel.AutoSize = true;
+            this.commentLabel.Location = new System.Drawing.Point(7, 283);
+            this.commentLabel.Name = "commentLabel";
+            this.commentLabel.Size = new System.Drawing.Size(69, 16);
+            this.commentLabel.TabIndex = 8;
+            this.commentLabel.Text = "Коментар:";
+            // 
             // textComment
             // 
-            this.textComment.BackColor = System.Drawing.SystemColors.Control;
+            this.textComment.BackColor = System.Drawing.SystemColors.Window;
             this.textComment.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textComment.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.textComment.Location = new System.Drawing.Point(3, 276);
+            this.textComment.Location = new System.Drawing.Point(3, 302);
             this.textComment.Multiline = true;
             this.textComment.Name = "textComment";
             this.textComment.Size = new System.Drawing.Size(929, 98);
@@ -185,7 +204,7 @@ namespace ToDoList
             this.tasksList.HideSelection = false;
             this.tasksList.Location = new System.Drawing.Point(3, 19);
             this.tasksList.Name = "tasksList";
-            this.tasksList.Size = new System.Drawing.Size(929, 251);
+            this.tasksList.Size = new System.Drawing.Size(929, 245);
             this.tasksList.TabIndex = 6;
             this.tasksList.UseCompatibleStateImageBehavior = false;
             this.tasksList.View = System.Windows.Forms.View.Details;
@@ -195,11 +214,6 @@ namespace ToDoList
             // 
             this.nameColumn.Text = "Задача";
             this.nameColumn.Width = 275;
-            // 
-            // statusColumn
-            // 
-            this.statusColumn.Text = "Статус";
-            this.statusColumn.Width = 87;
             // 
             // dateColumn
             // 
@@ -211,24 +225,35 @@ namespace ToDoList
             this.timeColumn.Text = "Час";
             this.timeColumn.Width = 88;
             // 
-            // projectColumn
-            // 
-            this.projectColumn.Text = "Проект";
-            this.projectColumn.Width = 257;
-            // 
             // priorityColumn
             // 
             this.priorityColumn.Text = "Пріорітет";
             this.priorityColumn.Width = 106;
             // 
+            // projectColumn
+            // 
+            this.projectColumn.Text = "Проект";
+            this.projectColumn.Width = 257;
+            // 
+            // statusColumn
+            // 
+            this.statusColumn.Text = "Статус";
+            this.statusColumn.Width = 87;
+            // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lowPriorityCheck);
+            this.groupBox1.Controls.Add(this.finishedChek);
+            this.groupBox1.Controls.Add(this.normalPriorityCheck);
+            this.groupBox1.Controls.Add(this.inProgressCheck);
+            this.groupBox1.Controls.Add(this.highPriorityCheck);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.periodSelect);
             this.groupBox1.Controls.Add(this.monthCalendar);
             this.groupBox1.Controls.Add(this.pictureBox1);
-            this.groupBox1.Controls.Add(this.dateTime);
             this.groupBox1.Controls.Add(this.projectList);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -236,46 +261,95 @@ namespace ToDoList
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(935, 272);
+            this.groupBox1.Size = new System.Drawing.Size(935, 251);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             // 
-            // pictureBox1
+            // lowPriorityCheck
             // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(8, 13);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(101, 99);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
+            this.lowPriorityCheck.AutoSize = true;
+            this.lowPriorityCheck.Location = new System.Drawing.Point(406, 91);
+            this.lowPriorityCheck.Name = "lowPriorityCheck";
+            this.lowPriorityCheck.Size = new System.Drawing.Size(75, 20);
+            this.lowPriorityCheck.TabIndex = 12;
+            this.lowPriorityCheck.Text = "Низький";
+            this.lowPriorityCheck.UseVisualStyleBackColor = true;
             // 
-            // dateTime
+            // finishedChek
             // 
-            this.dateTime.Location = new System.Drawing.Point(122, 69);
-            this.dateTime.Name = "dateTime";
-            this.dateTime.Size = new System.Drawing.Size(164, 23);
-            this.dateTime.TabIndex = 3;
-            this.dateTime.Visible = false;
-            this.dateTime.ValueChanged += new System.EventHandler(this.dateTime_ValueChanged);
+            this.finishedChek.AutoSize = true;
+            this.finishedChek.Location = new System.Drawing.Point(406, 211);
+            this.finishedChek.Name = "finishedChek";
+            this.finishedChek.Size = new System.Drawing.Size(89, 20);
+            this.finishedChek.TabIndex = 12;
+            this.finishedChek.Text = "Завершені";
+            this.finishedChek.UseVisualStyleBackColor = true;
             // 
-            // projectList
+            // normalPriorityCheck
             // 
-            this.projectList.FormattingEnabled = true;
-            this.projectList.Location = new System.Drawing.Point(692, 39);
-            this.projectList.Name = "projectList";
-            this.projectList.Size = new System.Drawing.Size(236, 220);
-            this.projectList.TabIndex = 5;
-            this.projectList.SelectedIndexChanged += new System.EventHandler(this.projectList_SelectedIndexChanged);
+            this.normalPriorityCheck.AutoSize = true;
+            this.normalPriorityCheck.Location = new System.Drawing.Point(406, 65);
+            this.normalPriorityCheck.Name = "normalPriorityCheck";
+            this.normalPriorityCheck.Size = new System.Drawing.Size(80, 20);
+            this.normalPriorityCheck.TabIndex = 12;
+            this.normalPriorityCheck.Text = "Середній";
+            this.normalPriorityCheck.UseVisualStyleBackColor = true;
             // 
-            // monthCalendar
+            // inProgressCheck
             // 
-            this.monthCalendar.Location = new System.Drawing.Point(122, 97);
-            this.monthCalendar.MaxSelectionCount = 365;
-            this.monthCalendar.Name = "monthCalendar";
-            this.monthCalendar.TabIndex = 7;
-            this.monthCalendar.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendar_DateChanged);
+            this.inProgressCheck.AutoSize = true;
+            this.inProgressCheck.Location = new System.Drawing.Point(406, 185);
+            this.inProgressCheck.Name = "inProgressCheck";
+            this.inProgressCheck.Size = new System.Drawing.Size(103, 20);
+            this.inProgressCheck.TabIndex = 12;
+            this.inProgressCheck.Text = "Незавершені";
+            this.inProgressCheck.UseVisualStyleBackColor = true;
+            // 
+            // highPriorityCheck
+            // 
+            this.highPriorityCheck.AutoSize = true;
+            this.highPriorityCheck.Location = new System.Drawing.Point(406, 39);
+            this.highPriorityCheck.Name = "highPriorityCheck";
+            this.highPriorityCheck.Size = new System.Drawing.Size(74, 20);
+            this.highPriorityCheck.TabIndex = 12;
+            this.highPriorityCheck.Text = "Високий";
+            this.highPriorityCheck.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(403, 159);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(52, 16);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "Статус:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(403, 13);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(67, 16);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Пріорітет:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(689, 13);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(61, 16);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Проекти:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(153, 13);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(95, 16);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Період показу:";
             // 
             // periodSelect
             // 
@@ -288,29 +362,39 @@ namespace ToDoList
             "на дату",
             "на період",
             "всі справи"});
-            this.periodSelect.Location = new System.Drawing.Point(122, 39);
+            this.periodSelect.Location = new System.Drawing.Point(156, 39);
             this.periodSelect.Name = "periodSelect";
             this.periodSelect.Size = new System.Drawing.Size(164, 24);
             this.periodSelect.TabIndex = 9;
             this.periodSelect.SelectedIndexChanged += new System.EventHandler(this.periodSelect_SelectedIndexChanged);
             // 
-            // label1
+            // monthCalendar
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(119, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(85, 16);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Показ справ:";
+            this.monthCalendar.Location = new System.Drawing.Point(156, 75);
+            this.monthCalendar.MaxSelectionCount = 365;
+            this.monthCalendar.Name = "monthCalendar";
+            this.monthCalendar.TabIndex = 7;
+            this.monthCalendar.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendar_DateChanged);
             // 
-            // label2
+            // pictureBox1
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(689, 13);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(61, 16);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "Проекти:";
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(30, 39);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(101, 99);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
+            // 
+            // projectList
+            // 
+            this.projectList.FormattingEnabled = true;
+            this.projectList.Location = new System.Drawing.Point(687, 39);
+            this.projectList.Name = "projectList";
+            this.projectList.Size = new System.Drawing.Size(236, 202);
+            this.projectList.TabIndex = 5;
+            this.projectList.SelectedIndexChanged += new System.EventHandler(this.projectList_SelectedIndexChanged);
             // 
             // Form1
             // 
@@ -364,12 +448,19 @@ namespace ToDoList
         private System.Windows.Forms.ColumnHeader priorityColumn;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.DateTimePicker dateTime;
         private System.Windows.Forms.CheckedListBox projectList;
         private System.Windows.Forms.ComboBox periodSelect;
         private System.Windows.Forms.MonthCalendar monthCalendar;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label commentLabel;
+        private System.Windows.Forms.CheckBox lowPriorityCheck;
+        private System.Windows.Forms.CheckBox finishedChek;
+        private System.Windows.Forms.CheckBox normalPriorityCheck;
+        private System.Windows.Forms.CheckBox inProgressCheck;
+        private System.Windows.Forms.CheckBox highPriorityCheck;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
     }
 }
 
