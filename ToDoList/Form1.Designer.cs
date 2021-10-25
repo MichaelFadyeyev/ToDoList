@@ -42,8 +42,8 @@ namespace ToDoList
             this.projectsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.projectManagerMenuI = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.commentLabel = new System.Windows.Forms.Label();
-            this.textComment = new System.Windows.Forms.TextBox();
+            this.taskListTitle = new System.Windows.Forms.Label();
+            this.commentTitle = new System.Windows.Forms.Label();
             this.tasksList = new System.Windows.Forms.ListView();
             this.nameColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.dateColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -65,6 +65,7 @@ namespace ToDoList
             this.monthCalendar = new System.Windows.Forms.MonthCalendar();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.projectList = new System.Windows.Forms.CheckedListBox();
+            this.textAbout = new System.Windows.Forms.RichTextBox();
             this.menuStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -119,28 +120,28 @@ namespace ToDoList
             // addTaskMenu
             // 
             this.addTaskMenu.Name = "addTaskMenu";
-            this.addTaskMenu.Size = new System.Drawing.Size(180, 22);
+            this.addTaskMenu.Size = new System.Drawing.Size(139, 22);
             this.addTaskMenu.Text = "&AddTask";
             this.addTaskMenu.Click += new System.EventHandler(this.addTaskMenu_Click);
             // 
             // editTaskMenu
             // 
             this.editTaskMenu.Name = "editTaskMenu";
-            this.editTaskMenu.Size = new System.Drawing.Size(180, 22);
+            this.editTaskMenu.Size = new System.Drawing.Size(139, 22);
             this.editTaskMenu.Text = "&EditTask";
             this.editTaskMenu.Click += new System.EventHandler(this.editTaskMenu_Click);
             // 
             // deleteTaskMenu
             // 
             this.deleteTaskMenu.Name = "deleteTaskMenu";
-            this.deleteTaskMenu.Size = new System.Drawing.Size(180, 22);
+            this.deleteTaskMenu.Size = new System.Drawing.Size(139, 22);
             this.deleteTaskMenu.Text = "&DeleteTask";
             this.deleteTaskMenu.Click += new System.EventHandler(this.deleteTaskMenu_Click);
             // 
             // findTaskMenu
             // 
             this.findTaskMenu.Name = "findTaskMenu";
-            this.findTaskMenu.Size = new System.Drawing.Size(180, 22);
+            this.findTaskMenu.Size = new System.Drawing.Size(139, 22);
             this.findTaskMenu.Text = "&FindTask";
             // 
             // projectsMenu
@@ -159,8 +160,9 @@ namespace ToDoList
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.commentLabel);
-            this.groupBox2.Controls.Add(this.textComment);
+            this.groupBox2.Controls.Add(this.textAbout);
+            this.groupBox2.Controls.Add(this.taskListTitle);
+            this.groupBox2.Controls.Add(this.commentTitle);
             this.groupBox2.Controls.Add(this.tasksList);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.groupBox2.Location = new System.Drawing.Point(0, 273);
@@ -168,27 +170,26 @@ namespace ToDoList
             this.groupBox2.Size = new System.Drawing.Size(935, 403);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Задачі";
             // 
-            // commentLabel
+            // taskListTitle
             // 
-            this.commentLabel.AutoSize = true;
-            this.commentLabel.Location = new System.Drawing.Point(7, 283);
-            this.commentLabel.Name = "commentLabel";
-            this.commentLabel.Size = new System.Drawing.Size(69, 16);
-            this.commentLabel.TabIndex = 8;
-            this.commentLabel.Text = "Коментар:";
+            this.taskListTitle.AutoSize = true;
+            this.taskListTitle.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.taskListTitle.Location = new System.Drawing.Point(7, 12);
+            this.taskListTitle.Name = "taskListTitle";
+            this.taskListTitle.Size = new System.Drawing.Size(44, 18);
+            this.taskListTitle.TabIndex = 9;
+            this.taskListTitle.Text = "label5";
             // 
-            // textComment
+            // commentTitle
             // 
-            this.textComment.BackColor = System.Drawing.SystemColors.Window;
-            this.textComment.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textComment.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.textComment.Location = new System.Drawing.Point(3, 302);
-            this.textComment.Multiline = true;
-            this.textComment.Name = "textComment";
-            this.textComment.Size = new System.Drawing.Size(929, 98);
-            this.textComment.TabIndex = 7;
+            this.commentTitle.AutoSize = true;
+            this.commentTitle.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.commentTitle.Location = new System.Drawing.Point(6, 250);
+            this.commentTitle.Name = "commentTitle";
+            this.commentTitle.Size = new System.Drawing.Size(123, 18);
+            this.commentTitle.TabIndex = 8;
+            this.commentTitle.Text = "Поточна задача:";
             // 
             // tasksList
             // 
@@ -199,12 +200,11 @@ namespace ToDoList
             this.priorityColumn,
             this.projectColumn,
             this.statusColumn});
-            this.tasksList.Dock = System.Windows.Forms.DockStyle.Top;
             this.tasksList.FullRowSelect = true;
             this.tasksList.HideSelection = false;
-            this.tasksList.Location = new System.Drawing.Point(3, 19);
+            this.tasksList.Location = new System.Drawing.Point(3, 34);
             this.tasksList.Name = "tasksList";
-            this.tasksList.Size = new System.Drawing.Size(929, 245);
+            this.tasksList.Size = new System.Drawing.Size(929, 201);
             this.tasksList.TabIndex = 6;
             this.tasksList.UseCompatibleStateImageBehavior = false;
             this.tasksList.View = System.Windows.Forms.View.Details;
@@ -268,52 +268,67 @@ namespace ToDoList
             // lowPriorityCheck
             // 
             this.lowPriorityCheck.AutoSize = true;
+            this.lowPriorityCheck.Checked = true;
+            this.lowPriorityCheck.CheckState = System.Windows.Forms.CheckState.Checked;
             this.lowPriorityCheck.Location = new System.Drawing.Point(406, 91);
             this.lowPriorityCheck.Name = "lowPriorityCheck";
             this.lowPriorityCheck.Size = new System.Drawing.Size(75, 20);
             this.lowPriorityCheck.TabIndex = 12;
             this.lowPriorityCheck.Text = "Низький";
             this.lowPriorityCheck.UseVisualStyleBackColor = true;
+            this.lowPriorityCheck.CheckedChanged += new System.EventHandler(this.lowPriorityCheck_CheckedChanged);
             // 
             // finishedChek
             // 
             this.finishedChek.AutoSize = true;
+            this.finishedChek.Checked = true;
+            this.finishedChek.CheckState = System.Windows.Forms.CheckState.Checked;
             this.finishedChek.Location = new System.Drawing.Point(406, 211);
             this.finishedChek.Name = "finishedChek";
             this.finishedChek.Size = new System.Drawing.Size(89, 20);
             this.finishedChek.TabIndex = 12;
             this.finishedChek.Text = "Завершені";
             this.finishedChek.UseVisualStyleBackColor = true;
+            this.finishedChek.CheckedChanged += new System.EventHandler(this.finishedChek_CheckedChanged);
             // 
             // normalPriorityCheck
             // 
             this.normalPriorityCheck.AutoSize = true;
+            this.normalPriorityCheck.Checked = true;
+            this.normalPriorityCheck.CheckState = System.Windows.Forms.CheckState.Checked;
             this.normalPriorityCheck.Location = new System.Drawing.Point(406, 65);
             this.normalPriorityCheck.Name = "normalPriorityCheck";
             this.normalPriorityCheck.Size = new System.Drawing.Size(80, 20);
             this.normalPriorityCheck.TabIndex = 12;
             this.normalPriorityCheck.Text = "Середній";
             this.normalPriorityCheck.UseVisualStyleBackColor = true;
+            this.normalPriorityCheck.CheckedChanged += new System.EventHandler(this.normalPriorityCheck_CheckedChanged);
             // 
             // inProgressCheck
             // 
             this.inProgressCheck.AutoSize = true;
+            this.inProgressCheck.Checked = true;
+            this.inProgressCheck.CheckState = System.Windows.Forms.CheckState.Checked;
             this.inProgressCheck.Location = new System.Drawing.Point(406, 185);
             this.inProgressCheck.Name = "inProgressCheck";
             this.inProgressCheck.Size = new System.Drawing.Size(103, 20);
             this.inProgressCheck.TabIndex = 12;
             this.inProgressCheck.Text = "Незавершені";
             this.inProgressCheck.UseVisualStyleBackColor = true;
+            this.inProgressCheck.CheckedChanged += new System.EventHandler(this.inProgressCheck_CheckedChanged);
             // 
             // highPriorityCheck
             // 
             this.highPriorityCheck.AutoSize = true;
+            this.highPriorityCheck.Checked = true;
+            this.highPriorityCheck.CheckState = System.Windows.Forms.CheckState.Checked;
             this.highPriorityCheck.Location = new System.Drawing.Point(406, 39);
             this.highPriorityCheck.Name = "highPriorityCheck";
             this.highPriorityCheck.Size = new System.Drawing.Size(74, 20);
             this.highPriorityCheck.TabIndex = 12;
             this.highPriorityCheck.Text = "Високий";
             this.highPriorityCheck.UseVisualStyleBackColor = true;
+            this.highPriorityCheck.CheckedChanged += new System.EventHandler(this.highPriorityCheck_CheckedChanged);
             // 
             // label4
             // 
@@ -396,6 +411,16 @@ namespace ToDoList
             this.projectList.TabIndex = 5;
             this.projectList.SelectedIndexChanged += new System.EventHandler(this.projectList_SelectedIndexChanged);
             // 
+            // textAbout
+            // 
+            this.textAbout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textAbout.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.textAbout.Location = new System.Drawing.Point(3, 272);
+            this.textAbout.Name = "textAbout";
+            this.textAbout.Size = new System.Drawing.Size(929, 128);
+            this.textAbout.TabIndex = 10;
+            this.textAbout.Text = "";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -438,7 +463,6 @@ namespace ToDoList
         private System.Windows.Forms.ToolStripMenuItem projectsMenu;
         private System.Windows.Forms.ToolStripMenuItem projectManagerMenuI;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox textComment;
         private System.Windows.Forms.ListView tasksList;
         private System.Windows.Forms.ColumnHeader nameColumn;
         private System.Windows.Forms.ColumnHeader statusColumn;
@@ -453,7 +477,7 @@ namespace ToDoList
         private System.Windows.Forms.MonthCalendar monthCalendar;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label commentLabel;
+        private System.Windows.Forms.Label commentTitle;
         private System.Windows.Forms.CheckBox lowPriorityCheck;
         private System.Windows.Forms.CheckBox finishedChek;
         private System.Windows.Forms.CheckBox normalPriorityCheck;
@@ -461,6 +485,8 @@ namespace ToDoList
         private System.Windows.Forms.CheckBox highPriorityCheck;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label taskListTitle;
+        private System.Windows.Forms.RichTextBox textAbout;
     }
 }
 

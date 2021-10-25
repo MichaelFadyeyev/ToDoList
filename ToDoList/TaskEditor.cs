@@ -49,10 +49,9 @@ namespace ToDoList.Models
 
             dateSet.Value = Date;
             timeSet.Format = DateTimePickerFormat.Time;
-            timeSet.CustomFormat = "HH:MM";
+            timeSet.CustomFormat = "t";
             timeSet.ShowUpDown = true;
             timeSet.Value = Time;
-            // Видалення задачі
             if (OperationTitle != "Нова задача")
             {
                 taskField.Text = TaskName;

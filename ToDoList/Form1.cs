@@ -21,6 +21,7 @@ namespace ToDoList
         List<ToDoTask> tasks;
         List<Project> projects;
         List<Priority> priorities;
+        
 
         public Form1()
         {
@@ -91,7 +92,7 @@ namespace ToDoList
                         Id = (int)reader["Id"],
                         Name = reader["Name"].ToString(),
                         Date = (DateTime)reader["Date"],
-                        Time = DateTime.Parse(reader["Time"].ToString() /*, System.Globalization.CultureInfo.CurrentCulture*/),
+                        Time = DateTime.Parse(reader["Time"].ToString(), System.Globalization.CultureInfo.CurrentCulture),
                         PriorityId = (int)reader["PriorityId"],
                         PriorityName = reader["PriorityName"].ToString(),
                         Tags = reader["Tag"].ToString(),
@@ -100,6 +101,7 @@ namespace ToDoList
                         ProjectName = reader["ProjectName"].ToString(),
                         IsDone = (bool)reader["IsDone"]
                     };
+
                     int index = task.ProjectId - 1;
 
                     switch (periodSelect.SelectedIndex)
@@ -107,26 +109,37 @@ namespace ToDoList
                         case 0:
                             if (task.Date == DateTime.Today)
                                 FillTaskList(task, index);
+                            taskListTitle.Text = $"Задачі на {DateTime.Today.ToString("D")}";
                             break;
                         case 1:
-                            DateTime startOfWeek = DateTime.Today.AddDays(
-                                (int)CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek-
-                                (int)DateTime.Today.DayOfWeek);
+                            DateTime startOfWeek;
+                            if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
+                                startOfWeek = DateTime.Today.AddDays(-6);
+                            else
+                                startOfWeek = DateTime.Today.AddDays(
+                                (int)CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek -
+                                (int)DateTime.Today.DayOfWeek);                                    
                             if (task.Date >= startOfWeek && task.Date < startOfWeek.AddDays(7))
                                 FillTaskList(task, index);
+
+                            taskListTitle.Text = $"Задачі на тиждень з " +
+                                $"{startOfWeek.ToString("D")} " +
+                                $"по {startOfWeek.AddDays(7).ToString("D")}";
                             break;
                         case 2:
                             DateTime today = DateTime.Today;
                             if (task.Date.Year == today.Year && task.Date.Month == today.Month)
-                            {
                                 FillTaskList(task, index);
-                            }
+
+                            taskListTitle.Text = $"Задачі на {ToMonthName(task.Date)} " +
+                                $"{task.Date.Year} р.";
                             break;
                         case 3:
                             monthCalendar.Enabled = true;
                             monthCalendar.BackColor = Color.White;
                             if (task.Date == monthCalendar.SelectionStart.Date)
                                 FillTaskList(task, index);
+                            taskListTitle.Text = $"Задачі на {task.Date}";
                             break;
                         case 4:
                             monthCalendar.Enabled = true;
@@ -135,10 +148,13 @@ namespace ToDoList
                             DateTime endDate = monthCalendar.SelectionEnd.Date;
                             if (task.Date >= startDate && task.Date <= endDate)
                                 FillTaskList(task, index);
+                            taskListTitle.Text = $"Задачі на період з {startDate} " +
+                                $"по {endDate}";
                             break;
 
                         default:
                             FillTaskList(task, index);
+                            taskListTitle.Text = $"Задачі за весь період";
                             break;
                     }
                 }
@@ -155,13 +171,25 @@ namespace ToDoList
             }
 
         }
+        private string ToMonthName(DateTime dt)
+        {
+            return CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(dt.Month);
+        }
         private void FillTaskList(ToDoTask task, int index)
         {
-            if (projectList.GetItemChecked(index))
+            if (projectList.GetItemChecked(index)
+                &&
+                ((inProgressCheck.Checked && task.IsDone == false) ||
+                (finishedChek.Checked && task.IsDone == true))
+                &&
+                ((highPriorityCheck.Checked && task.PriorityId == 1) ||
+                (normalPriorityCheck.Checked && task.PriorityId == 2) ||
+                (lowPriorityCheck.Checked && task.PriorityId == 3))
+                )
             {
                 var current = tasksList.Items.Add(task.Name);
                 current.SubItems.Add(task.Date.ToString("D"));
-                current.SubItems.Add(task.Time.ToString("HH:MM"));
+                current.SubItems.Add(task.Time.ToString("t"));
                 current.SubItems.Add(task.PriorityName);
                 current.SubItems.Add(task.ProjectName);
                 if (task.IsDone)
@@ -211,7 +239,16 @@ namespace ToDoList
             if (tasksList.FocusedItem != null)
             {
                 int index = tasksList.FocusedItem.Index;
-                textComment.Text = tasks[index].Comment;
+                commentTitle.Text = "Поточна задача: " + tasks[index].Name;
+                ListViewItem currentTask = tasksList.Items[index];
+                textAbout.Text = $"Назва: {tasks[index].Name}\n" +
+                    $"Заплановано на: { currentTask.SubItems[1].Text}, " +
+                    $"о { currentTask.SubItems[2].Text}\n" +
+                    $"Пріорітет: { tasks[index].PriorityName}\n" +
+                    $"Проект: { tasks[index].ProjectName}\n" +
+                    $"Статус: { currentTask.SubItems[5].Text}\n" +
+                    $"Коментар: { tasks[index].Comment}\n" +
+                    $"Ключові слова: { tasks[index].Tags}\n";
             }
         }
         private void periodSelect_SelectedIndexChanged(object sender, EventArgs e)
@@ -341,6 +378,29 @@ namespace ToDoList
             }
         }
 
+        private void inProgressCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            LoadTasks();
+        }
 
+        private void finishedChek_CheckedChanged(object sender, EventArgs e)
+        {
+            LoadTasks();
+        }
+
+        private void highPriorityCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            LoadTasks();
+        }
+
+        private void normalPriorityCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            LoadTasks();
+        }
+
+        private void lowPriorityCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            LoadTasks();
+        }
     }
 }

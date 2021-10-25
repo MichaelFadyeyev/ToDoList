@@ -71,7 +71,7 @@ namespace ToDoList.Models
             this.timeSet.Location = new System.Drawing.Point(208, 140);
             this.timeSet.Name = "timeSet";
             this.timeSet.ShowUpDown = true;
-            this.timeSet.Size = new System.Drawing.Size(84, 23);
+            this.timeSet.Size = new System.Drawing.Size(56, 23);
             this.timeSet.TabIndex = 17;
             // 
             // dateSet
