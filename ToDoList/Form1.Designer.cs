@@ -66,6 +66,7 @@ namespace ToDoList
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.projectList = new System.Windows.Forms.CheckedListBox();
             this.textAbout = new System.Windows.Forms.RichTextBox();
+            this.searchButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -213,7 +214,7 @@ namespace ToDoList
             // nameColumn
             // 
             this.nameColumn.Text = "Задача";
-            this.nameColumn.Width = 275;
+            this.nameColumn.Width = 229;
             // 
             // dateColumn
             // 
@@ -238,10 +239,11 @@ namespace ToDoList
             // statusColumn
             // 
             this.statusColumn.Text = "Статус";
-            this.statusColumn.Width = 87;
+            this.statusColumn.Width = 133;
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.searchButton);
             this.groupBox1.Controls.Add(this.lowPriorityCheck);
             this.groupBox1.Controls.Add(this.finishedChek);
             this.groupBox1.Controls.Add(this.normalPriorityCheck);
@@ -372,9 +374,9 @@ namespace ToDoList
             this.periodSelect.FormattingEnabled = true;
             this.periodSelect.Items.AddRange(new object[] {
             "на сьогодні",
+            "на завтра",
             "на тиждень",
             "на місяць",
-            "на дату",
             "на період",
             "всі справи"});
             this.periodSelect.Location = new System.Drawing.Point(156, 39);
@@ -420,6 +422,15 @@ namespace ToDoList
             this.textAbout.Size = new System.Drawing.Size(929, 128);
             this.textAbout.TabIndex = 10;
             this.textAbout.Text = "";
+            // 
+            // searchButton
+            // 
+            this.searchButton.Location = new System.Drawing.Point(551, 214);
+            this.searchButton.Name = "searchButton";
+            this.searchButton.Size = new System.Drawing.Size(75, 23);
+            this.searchButton.TabIndex = 13;
+            this.searchButton.Text = "Пошук задач";
+            this.searchButton.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -487,6 +498,7 @@ namespace ToDoList
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label taskListTitle;
         private System.Windows.Forms.RichTextBox textAbout;
+        private System.Windows.Forms.Button searchButton;
     }
 }
 

@@ -109,9 +109,16 @@ namespace ToDoList
                         case 0:
                             if (task.Date == DateTime.Today)
                                 FillTaskList(task, index);
-                            taskListTitle.Text = $"Задачі на {DateTime.Today.ToString("D")}";
+                            taskListTitle.Text = $"Задачі на сьогодні, {DateTime.Today.ToString("D")}";
+                            monthCalendar.SelectionStart = DateTime.Today;
                             break;
                         case 1:
+                            if (task.Date == DateTime.Today.AddDays(1))
+                                FillTaskList(task, index);
+                            monthCalendar.SelectionStart = DateTime.Today.AddDays(1);
+                            taskListTitle.Text = $"Задачі на завтра, {DateTime.Today.AddDays(1).ToString("D")}";
+                            break;
+                        case 2:
                             DateTime startOfWeek;
                             if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
                                 startOfWeek = DateTime.Today.AddDays(-6);
@@ -122,24 +129,24 @@ namespace ToDoList
                             if (task.Date >= startOfWeek && task.Date < startOfWeek.AddDays(7))
                                 FillTaskList(task, index);
 
+                            monthCalendar.SelectionStart = startOfWeek;
+                            monthCalendar.SelectionEnd = startOfWeek.AddDays(6);
                             taskListTitle.Text = $"Задачі на тиждень з " +
                                 $"{startOfWeek.ToString("D")} " +
                                 $"по {startOfWeek.AddDays(7).ToString("D")}";
                             break;
-                        case 2:
+                        case 3:
                             DateTime today = DateTime.Today;
                             if (task.Date.Year == today.Year && task.Date.Month == today.Month)
                                 FillTaskList(task, index);
 
+                            monthCalendar.SelectionStart = 
+                                new DateTime(today.Year, today.Month, 1);
+                            monthCalendar.SelectionEnd =
+                                new DateTime(today.Year, today.Month + 1, 1).AddDays(-1);
+
                             taskListTitle.Text = $"Задачі на {ToMonthName(task.Date)} " +
                                 $"{task.Date.Year} р.";
-                            break;
-                        case 3:
-                            monthCalendar.Enabled = true;
-                            monthCalendar.BackColor = Color.White;
-                            if (task.Date == monthCalendar.SelectionStart.Date)
-                                FillTaskList(task, index);
-                            taskListTitle.Text = $"Задачі на {task.Date}";
                             break;
                         case 4:
                             monthCalendar.Enabled = true;
@@ -148,10 +155,10 @@ namespace ToDoList
                             DateTime endDate = monthCalendar.SelectionEnd.Date;
                             if (task.Date >= startDate && task.Date <= endDate)
                                 FillTaskList(task, index);
-                            taskListTitle.Text = $"Задачі на період з {startDate} " +
-                                $"по {endDate}";
-                            break;
 
+                            taskListTitle.Text = $"Задачі на період з {startDate.Date.ToString("D")} " +
+                                $"по {endDate.Date.ToString("D")}";
+                            break;
                         default:
                             FillTaskList(task, index);
                             taskListTitle.Text = $"Задачі за весь період";
@@ -169,12 +176,13 @@ namespace ToDoList
                 if (connection.State == ConnectionState.Open)
                     connection.Close();
             }
-
         }
+
         private string ToMonthName(DateTime dt)
         {
             return CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(dt.Month);
         }
+
         private void FillTaskList(ToDoTask task, int index)
         {
             if (projectList.GetItemChecked(index)
@@ -199,6 +207,7 @@ namespace ToDoList
                 tasks.Add(task);
             }
         }
+
         private void LoadPriority()
         {
             try
@@ -230,10 +239,12 @@ namespace ToDoList
                     connection.Close();
             }
         }
+
         private void projectList_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadTasks();
         }
+
         private void tasksList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tasksList.FocusedItem != null)
@@ -251,6 +262,7 @@ namespace ToDoList
                     $"Ключові слова: { tasks[index].Tags}\n";
             }
         }
+
         private void periodSelect_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (monthCalendar.Enabled)
@@ -263,7 +275,7 @@ namespace ToDoList
 
         private void monthCalendar_DateChanged(object sender, DateRangeEventArgs e)
         {
-            if (periodSelect.SelectedIndex==3 || periodSelect.SelectedIndex == 4)
+            if (periodSelect.SelectedIndex==4)
             {
                 LoadTasks();
             }
